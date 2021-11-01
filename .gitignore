@@ -1,6 +1,9 @@
 .auth.json
 .auth.json.gpg
 .response.json
+.response.json.gpg
+
+.DS_Store
 
 data/
 instances/
