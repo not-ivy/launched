@@ -10,6 +10,8 @@ if ! [ -x "$(command -v gpg)" ]; then
   exit 1
 fi
 
+stty sane
+
 # Init folders
 if [ ! -d "instances" ]; then
   mkdir instances
