@@ -2,6 +2,6 @@
 A minecraft launcher written in bash.
 
 TODO(Less detailed version):
-- [>] Authenticate User
-- [>] Download minecraft jar
+- [x] Authenticate User
+- [x] Download minecraft jar
 - [ ] Starting the jar
