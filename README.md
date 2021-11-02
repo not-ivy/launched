@@ -9,7 +9,8 @@ A minecraft launcher written in bash.
 - [ ] Multi-instance management
 - [ ] Multi-account management
 - [x] Download minecraft jar
-- [ ] Download libraries and assets
+- [x] Download libraries
+- [ ] Download assets
 - [ ] Starting the jar
 
 ## License
