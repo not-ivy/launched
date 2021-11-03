@@ -1,4 +1,4 @@
-# Launched
+# Launched [![wakatime](https://wakatime.com/badge/user/32a4f5e7-c047-422a-9e96-26bc31c49a33/project/a4f036d2-e869-431f-aded-9bb3b29b2b6f.svg)](https://wakatime.com/badge/user/32a4f5e7-c047-422a-9e96-26bc31c49a33/project/a4f036d2-e869-431f-aded-9bb3b29b2b6f)
 
 A minecraft launcher written in bash.
 
