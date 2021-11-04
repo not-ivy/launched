@@ -10,7 +10,8 @@ A minecraft launcher written in bash.
 - [ ] Multi-account management
 - [x] Download minecraft jar
 - [x] Download libraries
-- [ ] Starting the jar
+- [x] Starting the jar
+    -  LWJGL Error
 
 ## License
 
