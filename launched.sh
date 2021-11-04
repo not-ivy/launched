@@ -152,6 +152,7 @@ else
 
   ./scripts/logs/warning.sh "Instances folder is empty, please choose a version to download:"
   # Download versions list if it doesn't exist
+  ./scripts/logs/info.sh "Downloading version manifest..."
   if [ ! -f "data/version_manifest.json" ]; then
     if curl --progress-bar -o ./data/version_manifest.json https://launchermeta.mojang.com/mc/game/version_manifest.json; then
       ./scripts/logs/success.sh "Version manifest downloaded."
@@ -166,11 +167,19 @@ else
       ./scripts/logs/error.sh "Invalid version. The program will now quit."
       exit 1
     fi
+    ./scripts/logs/info.sh "Input name of the instance:"
+    read -r name
+    if [ -d "./instances/$name" ]; then
+      ./scripts/logs/error.sh "Directory with the same name already exists."
+      exit 1
+    fi
     ./scripts/logs/info.sh "Downloading $version jar..."
-    mkdir -p "./data/$version"
-    curl --progress-bar "$(jq -r ".versions[] | select(.id == \"$version\") | .url" ./data/version_manifest.json <<<cat)" >"./data/$version/version.json"
-    mkdir -p "./instances/$version/libraries"
-    curl --progress-bar "$(jq -r '.downloads | .client | .url' "./data/$version/version.json" <<<cat)" -o "./instances/$version/client.jar"
+    mkdir -p "./data/$name"
+    mkdir -p "./instances/$name/libraries"
+    if [ ! -f "./data/$version/version.json" ]; then
+      curl --progress-bar "$(jq -r ".versions[] | select(.id == \"$version\") | .url" ./data/version_manifest.json <<<cat)" > "./data/$version/version.json"
+    fi
+    curl --progress-bar "$(jq -r '.downloads | .client | .url' "./data/$version/version.json" <<<cat)" -o "./instances/$name/client.jar"
     ./scripts/logs/info.sh "Downloading $version libraries..."
     # TODO: Verify sha1 which is '.libraries[] | .downloads | .artifact | .sha1' or '.libraries[] | .downloads | .classifiers | $system | .sha1'
     jq -r '.libraries[] | .downloads | .artifact | .url' "./data/$version/version.json" <<<cat | sed -r 's/null//' | while read -r line; do
@@ -178,20 +187,36 @@ else
         continue
       fi
       ./scripts/logs/info.sh "Downloading $line..."
-      curl --progress-bar "$line" -o "./instances/$version/libraries/$(basename "$line")"
+      curl --progress-bar "$line" -o "./instances/$name/libraries/$(basename "$line")"
     done
     jq -r ".libraries[] | .downloads | .classifiers | .[\"$system\"] | .url" "./data/$version/version.json" <<<cat | sed -r 's/null//' | while read -r line; do
       if [ -z "$line" ]; then
         continue
       fi
       ./scripts/logs/info.sh "Downloading $line..."
-      curl --progress-bar "$line" -o "./instances/$version/libraries/$(basename "$line")"
+      curl --progress-bar "$line" -o "./instances/$name/libraries/$(basename "$line")"
     done
     ./scripts/logs/success.sh "Downloaded."
     break
   done
 fi
 
-# java -Djava.library.path="/Users/sourtaste000/Developer/launched/instances/1point8/libraries" -cp /Users/sourtaste000/Developer/launched/instances/1point8/client.jar net.minecraft.client.main.Main
-# Error: Unable to initialize main class net.minecraft.client.main.Main
-# Caused by: java.lang.NoClassDefFoundError: joptsimple/OptionSpec
+# list the files present in the instances folder and save it to an array
+files=()
+while IFS='' read -r line; do files+=("$(pwd)/instances/1point8/libraries/$line"); done < <(ls instances/1point8/libraries)
+classpath=$(IFS=: ; echo "${files[*]}") 
+
+# cd ./instances/$name
+# java -Djava.library.path="$(pwd)/instances/$name/libraries" -cp "$classpath:$(pwd)/instances/$name/client.jar" "$(jq -r '.mainClass' "../../data/$version/version.json" <<<cat)"
+# Exception in thread "main" java.lang.UnsatisfiedLinkError: no lwjgl in java.library.path: /Users/sourtaste000/Developer/launched/instances/1point8/libraries/
+#         at java.base/java.lang.ClassLoader.loadLibrary(ClassLoader.java:2429)
+#         at java.base/java.lang.Runtime.loadLibrary0(Runtime.java:818)
+#         at java.base/java.lang.System.loadLibrary(System.java:1989)
+#         at org.lwjgl.Sys$1.run(Sys.java:73)
+#         at java.base/java.security.AccessController.doPrivileged(AccessController.java:318)
+#         at org.lwjgl.Sys.doLoadLibrary(Sys.java:66)
+#         at org.lwjgl.Sys.loadLibrary(Sys.java:95)
+#         at org.lwjgl.Sys.<clinit>(Sys.java:112)
+#         at bsu.I(SourceFile:2462)
+#         at net.minecraft.client.main.Main.main(SourceFile:40)
+# LETS GOOOO ONE STEP
