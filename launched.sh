@@ -169,4 +169,3 @@ classpath=$(IFS=: ; echo "${files[*]}")
 #         at org.lwjgl.Sys.<clinit>(Sys.java:112)
 #         at bsu.I(SourceFile:2462)
 #         at net.minecraft.client.main.Main.main(SourceFile:40)
-# LETS GOOOO ONE STEP

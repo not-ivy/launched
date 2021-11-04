@@ -33,6 +33,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ```
 
 # Thanks to:
-- [Github Copilot](https://copilot.github.com/)
+- [jq](https://github.com/stedolan/jq)
 - [wiki.vg](https://wiki.vg/)
 - [Stackoverflow](https://stackoverflow.com/)
+- [Github Copilot](https://copilot.github.com/)
