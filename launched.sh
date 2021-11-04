@@ -156,8 +156,8 @@ files=()
 while IFS='' read -r line; do files+=("$(pwd)/instances/1point8/libraries/$line"); done < <(ls instances/1point8/libraries)
 classpath=$(IFS=: ; echo "${files[*]}") 
 
-# cd ./instances/$name
-# java -Djava.library.path="$(pwd)/instances/$name/libraries" -cp "$classpath:$(pwd)/instances/$name/client.jar" "$(jq -r '.mainClass' "../../data/$version/version.json" <<<cat)"
+cd "./instances/$name" || exit 1
+java -Djava.library.path="$(pwd)/instances/$name/libraries" -cp "$classpath:$(pwd)/instances/$name/client.jar" "$(jq -r '.mainClass' "../../data/$version/version.json" <<<cat)"
 # Exception in thread "main" java.lang.UnsatisfiedLinkError: no lwjgl in java.library.path: /Users/sourtaste000/Developer/launched/instances/1point8/libraries/
 #         at java.base/java.lang.ClassLoader.loadLibrary(ClassLoader.java:2429)
 #         at java.base/java.lang.Runtime.loadLibrary0(Runtime.java:818)
