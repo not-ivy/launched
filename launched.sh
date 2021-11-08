@@ -153,9 +153,6 @@ else
   done
 fi
 
-
-# https://login.live.com/oauth20_authorize.srf?client_id=37af3da7-fe1a-4774-9005-88c9ee0cfd34&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A6942&scope=XboxLive.signin%20offline_access
-
 classpath=()
 classpathstring=""
 jq -r '.libraries[] | .downloads | .artifact | .path' "./data/$version/version.json" <<<cat | sed -r 's/null//' | while read -r tempclasspath; do
