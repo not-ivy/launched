@@ -162,6 +162,7 @@ jq -r '.libraries[] | .downloads | .artifact | .path' "./data/$version/version.j
   if [ -z "$tempclasspath" ]; then
     continue
   fi
+  # shellcheck disable=SC2030
   classpath+=("$(pwd)/instances/$name/libraries/$tempclasspath")
 done
 unset tempclasspath
@@ -169,8 +170,11 @@ jq -r ".libraries[] | .downloads | .classifiers | .[\"$system\"] | .path" "./dat
   if [ -z "$tempclasspath" ]; then
     continue
   fi
+  # shellcheck disable=SC2031
+  # shellcheck disable=2030
   classpath+=("$(pwd)/instances/$name/libraries/$tempclasspath")
 done
+# shellcheck disable=SC2031
 classpathstring=$(IFS=: ; echo "${classpath[*]}")
 
 cd "./instances/$name" || exit 1
